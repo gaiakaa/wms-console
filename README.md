@@ -1,18 +1,33 @@
+# WMS - Warehouse Management System
+
+A robust and optimized backend Java console application designed for warehouse inventory management and tracking.
+
+##  Project Architecture
+
+This system implements a **State Machine** architecture wrapped in a **Core Loop**. Instead of nesting deep and hard-to-maintain conditional statements, the application transitions between isolated, predictable operational states based on explicit operator input.
+
+### Features
+* **Main Menu Configuration**: Routing engine managing application flow.
+* **Item Registration**: Inventory cataloging (under development).
+* **Stock Movement**: Real-time logging for warehouse entries and exits (under development).
+* **Complete Stock Display**: Data visualization module for current warehouse quantities (under development).
+
+---
+
+## Built With
+
+* **Java SE** (Standard Edition)
+* **VS Code** - Core development environment
+* **Git & GitHub** - Version control management using structured branching
+
+---
+
 ## Getting Started
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+### Prerequisites
+* Java Development Kit (JDK 17 or higher)
 
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+### Running the Application
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/gaiakaa/wms-console.git](https://github.com/gaiakaa/wms-console.git)
