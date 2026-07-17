@@ -1,6 +1,4 @@
 import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.List;
 
 public class App {
    
@@ -17,7 +15,7 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        List<Item> stockList = new ArrayList<>();
+        StockService stockService = new StockService();
 
         AppState currentState = AppState.MAIN_MENU;
 
@@ -33,8 +31,7 @@ public class App {
                     break;
 
                  case REGISTERING_ITEM:
-                    System.out.println("\n--- [State: Registering New Item] ---");
-                    System.out.println("Feature under development...");
+                    stockService.registerItem(scanner);
                     currentState = AppState.MAIN_MENU;
                    break;
 
