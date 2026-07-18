@@ -48,8 +48,8 @@ public class App {
                     break;
 
                 case DISPLAYING_STOCK:
-                    System.out.println("\n--- [State: Displaying Current Stock]---");
-                    System.out.println("Feature under development....");
+                    
+                    stockService.displayStock();
                     currentState = AppState.MAIN_MENU;
                     break;
             
