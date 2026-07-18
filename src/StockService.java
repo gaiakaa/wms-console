@@ -1,12 +1,19 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 
 public class StockService {
     private final List<Item> stockList = new ArrayList<>();
 
     private int nextId = 1;
+
+    private static final String FILE_PATH = "stock.json";
 
     public void registerItem(Scanner scanner) {
         System.out.println("\n--- REGISTER NEW ITEM ---");
@@ -56,7 +63,8 @@ public class StockService {
 
         
         stockList.add(newItem);
-
+        saveToFile();
+        
         nextId++;
         
         System.out.println("\nItem '" + name + "' successfully registered!");
@@ -153,6 +161,8 @@ public class StockService {
         }
 
         targetItem.setQuantity(newQuantity);
+        saveToFile();
+
         System.out.println("\n Quantity for '" + targetItem.getName() + "' successfully updated to " + newQuantity + "!");
 
         if (newQuantity == 0) {
@@ -189,7 +199,79 @@ public class StockService {
         }
 
         stockList.remove(targetItem);
-        System.out.println("\n[OK] Item '" + targetItem.getName() + "' successfully removed from the system!");
+        saveToFile();
+        System.out.println("\nItem '" + targetItem.getName() + "' successfully removed from the system!");
+    }
+
+    private void saveToFile() {
+        try (FileWriter writer = new FileWriter(FILE_PATH)) {
+            writer.write("[\n");
+            for (int i = 0; i < stockList.size(); i++) {
+                Item item = stockList.get(i);
+                writer.write("  {\n");
+                writer.write("    \"id\": " + item.getId() + ",\n");
+                writer.write("    \"name\": \"" + item.getName() + "\",\n");
+                writer.write("    \"quantity\": " + item.getQuantity() + ",\n");
+                writer.write("    \"category\": " + item.getCategory() + "\n");
+                writer.write("  }");
+                
+                if (i < stockList.size() - 1) {
+                    writer.write(",");
+                }
+                writer.write("\n");
+            }
+            writer.write("]");
+        } catch (IOException e) {
+            System.out.println("WARNING: Could not save data to file: " + e.getMessage());
+        }
+    }
+
+    public void loadFromFile() {
+        File file = new File(FILE_PATH);
+        if (!file.exists()) {
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            StringBuilder jsonContent = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonContent.append(line.trim());
+            }
+
+
+            String content = jsonContent.toString().replace("[", "").replace("]", "");
+            if (content.isEmpty()) return;
+
+            String[] objects = content.split("\\},\\{");
+            for (String obj : objects) {
+                obj = obj.replace("{", "").replace("}", "");
+                String[] fields = obj.split(",");
+
+                int id = 0;
+                String name = "";
+                int quantity = 0;
+                String category = "";
+
+                for (String field : fields) {
+                    String[] parts = field.split(":");
+                    String key = parts[0].replace("\"", "").trim();
+                    String value = parts[1].replace("\"", "").trim();
+
+                    if (key.equals("id")) id = Integer.parseInt(value);
+                    if (key.equals("name")) name = value;
+                    if (key.equals("quantity")) quantity = Integer.parseInt(value);
+                    if (key.equals("category")) category = value;
+                }
+
+                stockList.add(new Item(id, name, quantity, category));
+                if (id >= nextId) {
+                    nextId = id + 1;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("⚠️ WARNING: Could not load data from file. Starting with empty stock.");
+        }
     }
 
 }

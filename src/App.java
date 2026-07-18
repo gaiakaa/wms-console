@@ -18,6 +18,8 @@ public class App {
 
         StockService stockService = new StockService();
 
+        stockService.loadFromFile();
+        
         AppState currentState = AppState.MAIN_MENU;
 
         System.out.println("=========================================");

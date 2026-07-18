@@ -1,2 +1,5 @@
 bin/
 .vscode/
+
+# Local database / stock data
+stock.json
