@@ -88,8 +88,11 @@ public class StockService {
         return null;
     }
 
-    public void updateItemQuantity(Scanner scanner) {
-        System.out.println("\n--- UPDATE ITEM QUANTITY ---");
+    public void updateItemQuantity(Scanner scanner, String operation) {
+
+        String title = operation.equals("+") ? "RECORDING ENTRY" : "RECORDING EXIT";
+        System.out.println("\n--- " + title + " ---");
+       
         displayStock();
 
         if(stockList.isEmpty()) {
@@ -120,21 +123,42 @@ public class StockService {
 
         int newQuantity = 0;
         while (true) {
-            System.out.print("Enter Quantity to add: ");
-            if (scanner.hasNextInt()) {
-                newQuantity = targetItem.getQuantity() + scanner.nextInt();
+            System.out.print("Enter Quantity to " + (operation.equals("+") ? "add" : "subtract") + ": ");
+          if (scanner.hasNextInt()) {
+                int inputQty = scanner.nextInt();
                 scanner.nextLine(); // Limpa o buffer
-                if (newQuantity >= 0) {
-                    break;
+
+                if (inputQty < 0) {
+                    System.out.println("Quantity cannot be negative.");
+                    continue;
                 }
-                System.out.println("Quantity cannot be negative.");
+
+                if (operation.equals("+")) {
+                    newQuantity = targetItem.getQuantity() + inputQty;
+                } else {
+                    newQuantity = targetItem.getQuantity() - inputQty;
+                }
+
+                if (newQuantity < 0) {
+                    System.out.println("Operation denied! Stock cannot fall below zero. Current stock is " + targetItem.getQuantity());
+                    continue;
+                }
+
+                break;
+                
             } else {
                 System.out.println("Invalid input! Please enter a valid number.");
-                scanner.nextLine(); 
+                scanner.nextLine();
             }
         }
-        targetItem.setQuantity(newQuantity);
-        System.out.println("\n[OK] Quantity for '" + targetItem.getName() + "' successfully updated to " + newQuantity + "!");
 
+        targetItem.setQuantity(newQuantity);
+        System.out.println("\n Quantity for '" + targetItem.getName() + "' successfully updated to " + newQuantity + "!");
+
+        if (newQuantity == 0) {
+            System.out.println("ATTENTION: The item ' " + targetItem.getName() + " '  is out of stock!");
+        }
     }
+
+    
 }

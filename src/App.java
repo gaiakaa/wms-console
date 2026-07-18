@@ -36,13 +36,12 @@ public class App {
                    break;
 
                 case RECORDING_ENTRY:
-                    stockService.updateItemQuantity(scanner);
+                    stockService.updateItemQuantity(scanner, "+");
                     currentState = AppState.MAIN_MENU;
                     break;
                     
                 case RECORDING_EXIT:
-                    System.out.println("\n---[State: Recording Exit] ---");
-                    System.out.println("Feature under development....");
+                    stockService.updateItemQuantity(scanner, "-");
                     currentState = AppState.MAIN_MENU;
                     break;
 
