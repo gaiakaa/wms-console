@@ -36,8 +36,7 @@ public class App {
                    break;
 
                 case RECORDING_ENTRY:
-                    System.out.println("\n--- [State: recording Stock Entry] ---");
-                    System.out.println("Feature under development....");
+                    stockService.updateItemQuantity(scanner);
                     currentState = AppState.MAIN_MENU;
                     break;
                     

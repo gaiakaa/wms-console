@@ -78,4 +78,63 @@ public class StockService {
             System.out.printf("%-7s | %-20s | %-10d | %-15s%n", formattedId, item.getName(), item.getQuantity(), item.getCategory());
         }
     }
+
+    private Item findItemById(int id) {
+        for (Item item : stockList) {
+            if (item.getId() == id){
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void updateItemQuantity(Scanner scanner) {
+        System.out.println("\n--- UPDATE ITEM QUANTITY ---");
+        displayStock();
+
+        if(stockList.isEmpty()) {
+            return;
+        }
+
+        int idToFind = 0;
+        while (true) {
+            System.out.println("\n Enter the ID of the item to update: ");
+            if (scanner.hasNextInt()) {
+                idToFind = scanner.nextInt();
+                scanner.nextLine();
+                break;
+            } else {
+                System.out.println("invalid input!! Please enter a valid number!!");
+                scanner.nextLine();
+            }
+        }
+
+        Item targetItem = findItemById(idToFind);
+
+        if (targetItem == null) {
+            System.out.println("Item with ID " + String.format("%05d", idToFind) + " not found.");
+            return;
+        }
+
+        System.out.println("Selected Item: " + targetItem.getName() + "(Current Qty: " + targetItem.getQuantity() + ")");
+
+        int newQuantity = 0;
+        while (true) {
+            System.out.print("Enter Quantity to add: ");
+            if (scanner.hasNextInt()) {
+                newQuantity = targetItem.getQuantity() + scanner.nextInt();
+                scanner.nextLine(); // Limpa o buffer
+                if (newQuantity >= 0) {
+                    break;
+                }
+                System.out.println("Quantity cannot be negative.");
+            } else {
+                System.out.println("Invalid input! Please enter a valid number.");
+                scanner.nextLine(); 
+            }
+        }
+        targetItem.setQuantity(newQuantity);
+        System.out.println("\n[OK] Quantity for '" + targetItem.getName() + "' successfully updated to " + newQuantity + "!");
+
+    }
 }
