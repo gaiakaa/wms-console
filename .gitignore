@@ -3,3 +3,5 @@ bin/
 
 # Local database / stock data
 stock.json
+wms-console.jar
+run.bat

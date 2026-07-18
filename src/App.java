@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import service.StockService;
+
 public class App {
    
     enum AppState{

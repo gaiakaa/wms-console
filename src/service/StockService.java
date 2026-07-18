@@ -1,4 +1,9 @@
+package service;
+
 import java.util.Scanner;
+
+import model.Item;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
@@ -270,7 +275,7 @@ public class StockService {
                 }
             }
         } catch (Exception e) {
-            System.out.println("⚠️ WARNING: Could not load data from file. Starting with empty stock.");
+            System.out.println("WARNING: Could not load data from file. Starting with empty stock.");
         }
     }
 
