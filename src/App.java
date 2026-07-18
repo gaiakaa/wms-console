@@ -8,6 +8,7 @@ public class App {
         RECORDING_ENTRY,
         RECORDING_EXIT,
         DISPLAYING_STOCK,
+        REMOVING_ITEM,
         TERMINATED
     }
 
@@ -50,6 +51,11 @@ public class App {
                     stockService.displayStock();
                     currentState = AppState.MAIN_MENU;
                     break;
+
+                case REMOVING_ITEM:
+                    stockService.removeItem(scanner);
+                    currentState = AppState.MAIN_MENU;
+                    break;
             
                 default:
                     currentState = AppState.MAIN_MENU;
@@ -68,7 +74,8 @@ public class App {
             System.out.println("2. Record Stock Entry");
             System.out.println("3. Record Stock Exit");
             System.out.println("4. Display Complete Stock");
-            System.out.println("5. Exit System");
+            System.out.println("5. Remove Product"); 
+            System.out.println("6. Exit System");
             System.out.println("Your Option: ");
 
             String option = scanner.nextLine();
@@ -83,6 +90,8 @@ public class App {
                 case "4":
                     return AppState.DISPLAYING_STOCK;
                 case "5":
+                    return AppState.REMOVING_ITEM;
+                case "6":
                     return AppState.TERMINATED;
             
                 default:

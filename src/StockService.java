@@ -160,5 +160,36 @@ public class StockService {
         }
     }
 
-    
+    public void removeItem(Scanner scanner) {
+        System.out.println("\n--- REMOVE PRODUCT FROM SYSTEM ---");
+        displayStock();
+
+        if (stockList.isEmpty()) {
+            return;
+        }
+
+        int idToFind = 0;
+        while (true) {
+            System.out.print("\nEnter the ID of the item to REMOVE: ");
+            if (scanner.hasNextInt()) {
+                idToFind = scanner.nextInt();
+                scanner.nextLine(); // Clear buffer
+                break;
+            } else {
+                System.out.println("Invalid input! Please enter a valid number!");
+                scanner.nextLine();
+            }
+        }
+
+        Item targetItem = findItemById(idToFind);
+
+        if (targetItem == null) {
+            System.out.println("Item with ID " + String.format("%05d", idToFind) + " not found.");
+            return;
+        }
+
+        stockList.remove(targetItem);
+        System.out.println("\n[OK] Item '" + targetItem.getName() + "' successfully removed from the system!");
+    }
+
 }
