@@ -1,0 +1,1 @@
+CreateObject("Wscript.Shell").Run "cmd /c mvn javafx:run", 0, False
