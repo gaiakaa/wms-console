@@ -17,13 +17,15 @@ public class RegisterItemView extends VBox {
     private final Label lblMessage;
 
     public RegisterItemView() {
-        this.setSpacing(15);
-        this.setAlignment(Pos.TOP_LEFT);
+        
+        this.setSpacing(20);
+        this.setAlignment(Pos.CENTER);
 
         Label title = new Label("Register New Item");
         title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
         GridPane grid = new GridPane();
+        grid.setAlignment(javafx.geometry.Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(12);
         grid.setPadding(new Insets(10, 0, 10, 0));

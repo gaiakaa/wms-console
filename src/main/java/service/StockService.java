@@ -18,11 +18,12 @@ public class StockService {
     public void registerItem(String name, int quantity, String category) {
         int id = nextId; 
 
-        Item newItem = new Item(id, name, quantity, category);
-        stockList.add(newItem);
-        saveToFile();
+        Item newItem = new Item(id, name, quantity, category); 
         
         nextId++;
+
+        stockList.add(newItem);
+        saveToFile();   
     }
 
     private Item findItemById(int id) {

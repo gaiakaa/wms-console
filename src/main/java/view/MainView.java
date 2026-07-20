@@ -5,11 +5,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-
+import javafx.stage.Stage;
 
 public class MainView extends BorderPane {
 
+    private VBox centerPanel;
     private VBox sidebarMenu;
     private Button btnDashboard;
     private Button btnRegisterItem;
@@ -17,9 +20,7 @@ public class MainView extends BorderPane {
     private Button btnStockExit;
     private Button btnRemoveItem;
     private Button btnExit;
-    
-    private VBox centerPanel;
-
+        
     public MainView() {
         initSidebar();
         initCenterPanel();
@@ -27,12 +28,15 @@ public class MainView extends BorderPane {
 
     private void initSidebar() {
         sidebarMenu = new VBox();
+        sidebarMenu.getStyleClass().add("sidebar");
         sidebarMenu.setPadding(new Insets(20));
         sidebarMenu.setSpacing(15);
         sidebarMenu.setPrefWidth(200);
 
         Label menuTitle = new Label("WMS - Navigation");
         menuTitle.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
+        menuTitle.setMaxWidth(Double.MAX_VALUE); 
+        menuTitle.setAlignment(Pos.CENTER);
 
         btnDashboard = new Button("Dashboard");
         btnRegisterItem = new Button("Register Item");
@@ -49,7 +53,16 @@ public class MainView extends BorderPane {
         btnRemoveItem.setMaxWidth(Double.MAX_VALUE);
         btnExit.setMaxWidth(Double.MAX_VALUE);
 
-        sidebarMenu.getChildren().addAll(menuTitle, btnDashboard, btnRegisterItem, btnStockEntry, btnStockExit, btnRemoveItem, btnExit);
+        Region footerSpacer = new Region();
+        VBox.setVgrow(footerSpacer, Priority.ALWAYS);
+        
+        Label watermark = new Label("Developed by @gaiakaa");
+        watermark.getStyleClass().add("watermark-text");
+        
+        watermark.setMaxWidth(Double.MAX_VALUE);
+        watermark.setAlignment(Pos.BOTTOM_CENTER); 
+
+        sidebarMenu.getChildren().addAll(menuTitle, btnDashboard, btnRegisterItem, btnStockEntry, btnStockExit, btnRemoveItem, btnExit, footerSpacer, watermark);
         this.setLeft(sidebarMenu);
     }
 
@@ -63,6 +76,11 @@ public class MainView extends BorderPane {
         
         centerPanel.getChildren().add(welcomeLabel);
         this.setCenter(centerPanel);
+    }
+
+    public void bindTitleBar(Stage stage) {
+        TitleBarView titleBar = new TitleBarView(stage);
+        this.setTop(titleBar);
     }
 
     public Button getBtnDashboard() { return btnDashboard; }

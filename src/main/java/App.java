@@ -13,10 +13,18 @@ public class App extends Application {
 
         new MainController(mainView);
 
-        Scene scene = new Scene(mainView, 800, 550);
+        primaryStage.initStyle(javafx.stage.StageStyle.UNDECORATED);
+
+        Scene scene = new Scene(mainView, 800, 550, javafx.scene.paint.Color.TRANSPARENT);
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+
+        mainView.bindTitleBar(primaryStage);
+        primaryStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
         
-        primaryStage.setTitle("WMS - Warehouse Management System v1.0.0");
         primaryStage.setScene(scene);
+        primaryStage.setMinWidth(780);
+        primaryStage.setMinHeight(400);
+
         primaryStage.show();
     }
 

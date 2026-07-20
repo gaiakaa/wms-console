@@ -5,3 +5,4 @@ target/
 stock.json
 wms-console.jar
 run.bat
+scripts/launch.vbs

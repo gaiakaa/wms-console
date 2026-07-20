@@ -16,12 +16,13 @@ public class RemoveItemView extends VBox {
 
     public RemoveItemView() {
         this.setSpacing(15);
-        this.setAlignment(Pos.TOP_LEFT);
+        this.setAlignment(Pos.CENTER);
 
         Label title = new Label("Remove Product from System");
         title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
         GridPane grid = new GridPane();
+        grid.setAlignment(javafx.geometry.Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(12);
         grid.setPadding(new Insets(10, 0, 10, 0));

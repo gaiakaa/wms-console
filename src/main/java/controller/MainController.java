@@ -16,6 +16,7 @@ import view.MainView;
 import view.RegisterItemView;
 import view.StockUpdateView;
 import view.RemoveItemView;
+import view.ConfirmationDialogView;
 
 public class MainController {
 
@@ -45,16 +46,24 @@ public class MainController {
     private void showDashboard() {
         VBox centerPanel = view.getCenterPanel();
         centerPanel.getChildren().clear(); 
-        centerPanel.setSpacing(10);
+        centerPanel.setSpacing(15);
+
+        centerPanel.setAlignment(javafx.geometry.Pos.TOP_CENTER);
 
         Label title = new Label("Current Stock Dashboard");
         title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
         TableView<Item> table = new TableView<>();
+        
+        table.setPlaceholder(new Label("No items registered yet."));
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        javafx.scene.layout.VBox.setVgrow(table, javafx.scene.layout.Priority.ALWAYS);
 
         TableColumn<Item, Integer> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        idColumn.setPrefWidth(40);
+        idColumn.setPrefWidth(100);
+        idColumn.setStyle("-fx-alignment: CENTER;");
 
         idColumn.setCellFactory(column -> new TableCell<Item, Integer>() {
             @Override
@@ -75,10 +84,12 @@ public class MainController {
         TableColumn<Item, Integer> quantityColumn = new TableColumn<>("Quantity");
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         quantityColumn.setPrefWidth(100);
+        quantityColumn.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<Item, String> categoryColumn = new TableColumn<>("Category");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         categoryColumn.setPrefWidth(160);
+        categoryColumn.setStyle("-fx-alignment: CENTER;");
 
         table.getColumns().add(idColumn);
         table.getColumns().add(nameColumn);
@@ -92,11 +103,12 @@ public class MainController {
     }
 
     private void showRegisterItemForm() {
-
         VBox centerPanel = view.getCenterPanel();
         centerPanel.getChildren().clear();
+        centerPanel.setAlignment(javafx.geometry.Pos.CENTER);
 
         RegisterItemView registerForm = new RegisterItemView();
+        registerForm.getBtnSave().setDefaultButton(true);
 
         registerForm.getBtnSave().setOnAction(e -> {
             String name = registerForm.getTxtName().getText().trim();
@@ -141,12 +153,16 @@ public class MainController {
     private void showStockUpdateForm(String title, String buttonColor, String operation) {
         VBox centerPanel = view.getCenterPanel();
         centerPanel.getChildren().clear();
+        centerPanel.setAlignment(javafx.geometry.Pos.CENTER);
 
         StockUpdateView updateForm = new StockUpdateView();
+
+        
         
         updateForm.getLblTitle().setText(title);
         updateForm.getBtnSave().setText(operation.equals("+") ? "📥 Record Entry" : "📤 Record Exit");
         updateForm.getBtnSave().setStyle("-fx-background-color: " + buttonColor + "; -fx-text-fill: white; -fx-font-weight: bold;");
+        updateForm.getBtnSave().setDefaultButton(true);
 
         updateForm.getBtnSave().setOnAction(e -> {
             String idStr = updateForm.getTxtId().getText().trim();
@@ -191,8 +207,10 @@ public class MainController {
     private void showRemoveItemForm() {
         VBox centerPanel = view.getCenterPanel();
         centerPanel.getChildren().clear();
+        centerPanel.setAlignment(javafx.geometry.Pos.CENTER);
 
         RemoveItemView removeForm = new RemoveItemView();
+        removeForm.getBtnRemove().setDefaultButton(true);
 
         removeForm.getBtnRemove().setOnAction(e -> {
             String idStr = removeForm.getTxtId().getText().trim();
@@ -206,13 +224,26 @@ public class MainController {
                 return;
             }
 
-            boolean success = stockService.removeItem(idToRemove);
+           
+            javafx.stage.Stage mainStage = (javafx.stage.Stage) view.getScene().getWindow();
 
-            if (success) {
-                removeForm.getTxtId().clear();
-                showSuccessMessage(msg, "Item with ID " + idStr + " successfully removed from the system!");
+            
+            boolean confirmed = ConfirmationDialogView.show(
+                mainStage,
+                "Are you sure you want to delete the item with ID " + idStr + "?"
+            );
+
+            if (confirmed) {
+                boolean success = stockService.removeItem(idToRemove);
+
+                if (success) {
+                    removeForm.getTxtId().clear();
+                    showSuccessMessage(msg, "Item with ID " + idStr + " successfully removed from the system!");
+                } else {
+                    showErrorMessage(msg, "Item with ID " + idStr + " not found.");
+                }
             } else {
-                showErrorMessage(msg, "Item with ID " + idStr + " not found.");
+                showErrorMessage(msg, "Deletion canceled by the user.");
             }
         });
 
